@@ -14,3 +14,10 @@ class StudentSerializer(serializers.Serializer):
         instance.city=validated_data.get('city',instance.city)
         instance.save()
         return instance
+    
+    def validate(self, data):
+        name=data.get('name')
+        city=data.get('city')
+        if len(city)<=3:
+            raise serializers.ValidationError('City Name must be Longer')
+        return data

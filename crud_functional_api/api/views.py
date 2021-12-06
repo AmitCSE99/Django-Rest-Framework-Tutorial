@@ -14,7 +14,7 @@ def curd_create(request):
     if serializer.is_valid():
         serializer.save()
         return JsonResponse({'success':True})
-    return JsonResponse({'success':False})
+    return JsonResponse({'success':False,'data':serializer.errors})
 
 def curd_read_all(request):
     student_list=Student.objects.all()
@@ -33,8 +33,9 @@ def curd_update(request):
     python_data=JSONParser().parse(stream=stream)
     id=python_data.get('id')
     stu=Student.objects.get(id=id)
+    print(stu.name)
     serializer=StudentSerializer(stu,python_data,partial=True)
     if serializer.is_valid():
         serializer.save()
         return JsonResponse({'success':True},safe=False)
-    return JsonResponse({'success':False})
+    return JsonResponse({'success':False,'data':serializer.errors})
